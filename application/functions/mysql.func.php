@@ -168,14 +168,10 @@ function delete($link, $table, $username) {
  * @param string $result_type
  * @return array|boolean
  */
-function fetchOne($link, $query, $result_type = MYSQLI_ASSOC) {
+function fetchOne($link, $query) {
 	$result = mysqli_query ( $link, $query );
-	if ($result && mysqli_num_rows ( $result ) > 0) {
-		$row = mysqli_fetch_array ( $result, $result_type );
+		$row = mysqli_fetch_assoc ( $result);
 		return $row;
-	} else {
-		return false;
-	}
 }
 
 /**

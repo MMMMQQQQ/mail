@@ -84,10 +84,11 @@ EOF;
         $token=$_GET['token'];
         $username=mysqli_real_escape_string($link,$username);
         $query1="select id,token_exptime from {$table} WHERE username='{$username}'";
-        $query=mysqli_query($link,$query1);
+       // $query=mysqli_query($link,$query1);
 
         //mysqli的查询语句
-        $user=mysqli_fetch_assoc($query);
+       // $user=mysqli_fetch_assoc($query);
+        $user=fetchOne($link, $query1);
         if($user){
             //实现激活
             $now=time();
@@ -112,4 +113,19 @@ EOF;
             var_dump($user);
         }
         break;
+    case 'login':
+        $username=addslashes($username);
+        $query="select id,status from {$table} where username='{$username}' and password='{$password}'";
+        $row=fetchOne($link,$query);
+        if($row){
+            if($row['status']==0){
+                alertMes("请先到邮箱激活再来登录",'index.php');
+            }else{
+                echo "登录成功";
+            }
+            }else{
+            alertMes("用户名或密码错误，重新登录",'index.php');
+        }
+    break;
+
 }
