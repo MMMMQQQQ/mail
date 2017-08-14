@@ -99,7 +99,7 @@ EOF;
                 alertMes("激活码过期，请重新注册","index.php");
             }else{
                 $data=array('status'=>1);
-                $res=update($link,$data,$table,$username);
+                $res=update($link,$data,$table,"username=".$username);
                 if($res){
                     alertMes("激活成功","index.php");
                    // echo "激活成功";
@@ -121,7 +121,7 @@ EOF;
             if($row['status']==0){
                 alertMes("请先到邮箱激活再来登录",'index.php');
             }else{
-                echo "登录成功";
+                alertMes("登录成功",'student/layout-index.php');
             }
             }else{
             alertMes("用户名或密码错误，重新登录",'index.php');

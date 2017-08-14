@@ -1,5 +1,5 @@
 <?php
-require_once 'config/config.php';
+//require_once 'config/config.php';
 /**
  * 连接
  * @param string $host
@@ -73,7 +73,18 @@ regTime INT UNSIGNED NOT NULL,
 status TINYINT UNSIGNED DEFAULT 0
 )";
 
+    $sql1="CREATE TABLE IF NOT EXISTS student(
+        id INT UNSIGNED AUTO_INCREMENT KEY,
+username VARCHAR(20) NOT NULL UNIQUE,
+age INT NOT NULL,
+sex VARCHAR(10)
+)";
+
     if ($conn->query($sql) !== TRUE) {
+        echo "<br/> Error creating table: " . $conn->error;
+    }
+
+    if ($conn->query($sql1) !== TRUE) {
         echo "<br/> Error creating table: " . $conn->error;
     }
 
@@ -127,13 +138,13 @@ function insert($link,$data,$table){
  * @param string $where
  * @return boolean
  */
-function update($link, $data, $table,$username) {
+function update($link, $data, $table,$where) {
     foreach ( $data as $key => $val ) {
         $set .= "{$key}='{$val}',";
     }
     $set = trim ( $set, ',' );
   //  $where = $where == null ? '' : ' WHERE '."'username'='{$username}''";
-    $query = "UPDATE {$table} SET {$set} WHERE username='{$username}'";
+    $query = "UPDATE {$table} SET {$set} WHERE {$where}";
     $res = mysqli_query ( $link, $query );
     if ($res) {
         return $res;
@@ -150,9 +161,9 @@ function update($link, $data, $table,$username) {
  * @param string $where
  * @return boolean
  */
-function delete($link, $table, $username) {
+function delete($link, $table, $where) {
 	//$where = $where ? ' WHERE ' . $where : '';
-	$query = "DELETE FROM {$table} WHERE username='{$username}'";
+	$query = "DELETE FROM {$table} WHERE {$where}";
 	$res = mysqli_query ( $link, $query );
 	if ($res) {
 		return mysqli_affected_rows ( $link );
